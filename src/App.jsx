@@ -1,15 +1,14 @@
-
 // Component
-import Navigation from "./components/Navigation"
+import Navigation from './components/Navigation';
 
 function App() {
-
-  return (
-    <>
-      <Navigation />
-      <h2>Hello World</h2>
-    </>
-  )
+	return (
+		<>
+			<Navigation />
+			{/* main content card */}
+			<main className="min-h-screen max-w-7xl border-b border-neutral-600"></main>
+		</>
+	);
 }
 
-export default App
+export default App;
