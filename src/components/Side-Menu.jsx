@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 function SideMenu() {
     return (
-        <div className="grid grid-cols-12 gap-4 text-white">
             <aside className="block col-span-2 sticky top-20 h-24 ">
                 <ul className='flex flex-col gap-4'>
                     <li>
@@ -15,7 +14,6 @@ function SideMenu() {
                     </li>
                 </ul>
             </aside>
-        </div>
     );
 }
 
