@@ -1,14 +1,13 @@
-import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { FaRegUser } from 'react-icons/fa';
-import { RiMenu2Line } from 'react-icons/ri';
 import {
-	FaSearch,
-	FaBookmark,
-	FaMoon,
 	FaArrowLeft,
+	FaBookmark,
 	FaHome,
+	FaMoon,
+	FaSearch,
 } from 'react-icons/fa';
+import { RiMenu2Line } from 'react-icons/ri';
+import { Link } from 'react-router-dom';
 
 import { FaRankingStar } from 'react-icons/fa6';
 
@@ -20,7 +19,7 @@ function Navigation() {
 
 	return (
 		<>
-			<nav className=" w-full px-3 relative z-10 shadow-sm bg-white border-b dark:bg-black dark:text-white  dark:border-neutral-900">
+			<nav className=" w-full px-3 relative z-10 shadow-sm bg-black border-b border-neutral-900 text-white">
 				<div className="max-w-7xl grid grid-cols-12 gap-4 items-center">
 					{/* brand menu */}
 					<div className="col-span-2 flex">
@@ -48,7 +47,7 @@ function Navigation() {
 							<input
 								id="search-input"
 								type="text"
-								className="t-form w-full py-2 px-2 border-0 dark:bg-neutral-900 "
+								className="t-form w-full py-2 px-2 border-0 bg-neutral-600 rounded-md  "
 								placeholder="Type and hit enter"
 							/>
 						</form>
