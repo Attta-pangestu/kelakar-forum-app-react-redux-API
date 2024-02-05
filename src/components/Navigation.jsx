@@ -19,7 +19,7 @@ function Navigation() {
 
 	return (
 		<>
-			<nav className=" w-full px-3 relative z-10 shadow-sm bg-black border-b border-neutral-900 text-white">
+			<nav className=" w-full px-3 relative z-10 shadow-sm bg-black border-b border-neutral-900 text-white justify-end">
 				<div className="max-w-7xl grid grid-cols-12 gap-4 items-center">
 					{/* brand menu */}
 					<div className="col-span-2 flex">
