@@ -7,6 +7,14 @@ const actionType = {
     
 }
 
+function setIsPreloadActionCreator(isPreload){
+    return {
+        type: actionType.SET_IS_PRELOAD, 
+        payload: {
+            isPreload
+        }
+    }
+}
 
 function asyncPreloadProcess(){
     return async (dispatch) =>  {
@@ -17,14 +25,10 @@ function asyncPreloadProcess(){
          }catch(err) {
             alert("Silahkan Login Dulu");
          } finally{
-
+            dispatch(setIsPreloadActionCreator(false));
          }
          
     }
 }
 
-function setIsPreloadActionCreator(isPreload){
-    return {
-        
-    }
-}
+export {actionType, setIsPreloadActionCreator}
