@@ -32,7 +32,7 @@ const api = (() => {
 
 		if (status !== 'success') {
 			alert(message);
-			return { error: true };
+			throw new Error(message);
 		}
 		return { error: false };
 	}
@@ -50,7 +50,7 @@ const api = (() => {
 
 		if (status !== 'success') {
 			alert(message);
-			return { error: true, token: null };
+			throw new Error(message);
 		}
 		return { error: false, token };
 	}
@@ -67,7 +67,7 @@ const api = (() => {
 
 		if (status !== 'success') {
 			alert(message);
-			return { error: true, users: null };
+			throw new Error(message);
 		}
 		return { error: false, users };
 	}
@@ -81,7 +81,7 @@ const api = (() => {
 
 		if (status !== 'success') {
 			alert(message);
-			return { error: true, user: null };
+			throw new Error(message);
 		}
 		return { error: false, user };
 	}
@@ -96,7 +96,7 @@ const api = (() => {
 
 		if (status !== 'success') {
 			alert(message);
-			return { error: true };
+			throw new Error(message);
 		}
 		return { error: false };
 	}
@@ -110,7 +110,7 @@ const api = (() => {
 
 		if (status !== 'success') {
 			alert(message);
-			return { error: true, threads: null };
+			throw new Error(message);
 		}
 		return { error: false, threads };
 	}
@@ -124,7 +124,7 @@ const api = (() => {
 
 		if (status !== 'success') {
 			alert(message);
-			return { error: true, detailThread: null };
+			throw new Error(message);
 		}
 		return { error: false, detailThread };
 	}
@@ -142,9 +142,26 @@ const api = (() => {
 
 		if (status !== 'success') {
 			alert(message);
-			return { error: true, detailThread: null };
+			throw new Error(message);
 		}
 		return { error: false, detailThread };
+	}
+
+	async function upVoteThread(id) {
+		const response = await _fetchWithAuthtch(
+			`${BASE_URL}/threads/${id}/up-vote`,
+			{
+				method: 'POST',
+			}
+		);
+		const responseJSON = response.json();
+		const { status, message, data: detailThread } = responseJSON;
+
+		if (status !== 'success') {
+			alert(message);
+			throw new Error(message);
+		}
+		return { error: false};
 	}
 
 	return {
