@@ -7,7 +7,7 @@ const api = (() => {
 	}
 
 	function getAccessToken() {
-		localStorage.getItem(KEY_STORAGE);
+		return localStorage.getItem(KEY_STORAGE);
 	}
 
 	async function _fetchWithAuth(url, options = {}) {
@@ -27,7 +27,7 @@ const api = (() => {
 			},
 			body: JSON.stringify({ name, email, password }),
 		});
-		const responseJSON = response.json();
+		const responseJSON = await response.json();
 		const { status, message } = responseJSON;
 
 		if (status !== 'success') {
@@ -45,8 +45,12 @@ const api = (() => {
 			},
 			body: JSON.stringify({ email, password }),
 		});
-		const responseJSON = response.json();
-		const { status, message, data: token } = responseJSON;
+		const responseJSON = await response.json();
+		const {
+			status,
+			message,
+			data: { token },
+		} = responseJSON;
 
 		if (status !== 'success') {
 			alert(message);
@@ -62,8 +66,12 @@ const api = (() => {
 				'Content-Type': 'application/json',
 			},
 		});
-		const responseJSON = response.json();
-		const { status, message, data: users } = responseJSON;
+		const responseJSON = await response.json();
+		const {
+			status,
+			message,
+			data: { users },
+		} = responseJSON;
 
 		if (status !== 'success') {
 			alert(message);
@@ -76,11 +84,14 @@ const api = (() => {
 		const response = await _fetchWithAuth(`${BASE_URL}/users/me`, {
 			method: 'GET',
 		});
-		const responseJSON = response.json();
-		const { status, message, data: user } = responseJSON;
+		const responseJSON = await response.json();
+		const {
+			status,
+			message,
+			data: { user },
+		} = responseJSON;
 
 		if (status !== 'success') {
-			alert(message);
 			throw new Error(message);
 		}
 		return { error: false, user };
@@ -91,7 +102,7 @@ const api = (() => {
 			method: 'POST',
 			body: JSON.stringify({ title, body, category }),
 		});
-		const responseJSON = response.json();
+		const responseJSON = await response.json();
 		const { status, message } = responseJSON;
 
 		if (status !== 'success') {
@@ -105,8 +116,12 @@ const api = (() => {
 		const response = await fetch(`${BASE_URL}/threads`, {
 			method: 'GET',
 		});
-		const responseJSON = response.json();
-		const { status, message, data: threads } = responseJSON;
+		const responseJSON = await response.json();
+		const {
+			status,
+			message,
+			data: { threads },
+		} = responseJSON;
 
 		if (status !== 'success') {
 			alert(message);
@@ -116,10 +131,10 @@ const api = (() => {
 	}
 
 	async function getDetailThreads(id) {
-		const response = await fetch(`${BASE_URL}/threads/id`, {
+		const response = await fetch(`${BASE_URL}/threads/${id}`, {
 			method: 'GET',
 		});
-		const responseJSON = response.json();
+		const responseJSON = await response.json();
 		const { status, message, data: detailThread } = responseJSON;
 
 		if (status !== 'success') {
@@ -129,15 +144,33 @@ const api = (() => {
 		return { error: false, detailThread };
 	}
 
+	async function getAllLeaderboards() {
+		const response = await fetch(`${BASE_URL}/leaderboards`, {
+			method: 'GET',
+		});
+		const responseJSON = await response.json();
+		const {
+			status,
+			message,
+			data: { leaderboards },
+		} = responseJSON;
+
+		if (status !== 'success') {
+			alert(message);
+			throw new Error(message);
+		}
+		return { error: false, leaderboards };
+	}
+
 	async function postComment({ content, id }) {
-		const response = await _fetchWithAuthtch(
+		const response = await _fetchWithAuth(
 			`${BASE_URL}/threads/${id}/comments`,
 			{
 				method: 'POST',
 				body: JSON.stringify({ content }),
 			}
 		);
-		const responseJSON = response.json();
+		const responseJSON = await response.json();
 		const { status, message, data: detailThread } = responseJSON;
 
 		if (status !== 'success') {
@@ -148,29 +181,36 @@ const api = (() => {
 	}
 
 	async function upVoteThread(id) {
-		const response = await _fetchWithAuthtch(
-			`${BASE_URL}/threads/${id}/up-vote`,
-			{
-				method: 'POST',
-			}
-		);
-		const responseJSON = response.json();
+		const response = await _fetchWithAuth(`${BASE_URL}/threads/${id}/up-vote`, {
+			method: 'POST',
+		});
+		const responseJSON = await response.json();
 		const { status, message, data: detailThread } = responseJSON;
 
 		if (status !== 'success') {
 			alert(message);
 			throw new Error(message);
 		}
-		return { error: false};
+		return { detailThread };
+	}
+
+	async function getInitialData() {
+		const { users } = await getAllUsers();
+		const { threads } = await getAllThreads();
+		const { leaderboards } = await getAllLeaderboards();
+		return { users, threads, leaderboards };
 	}
 
 	return {
 		putAccessToken,
 		register,
 		login,
-		getAllUsers,
 		getAuthUsers,
+		getInitialData,
 		postThread,
+		getDetailThreads,
+		postComment,
+		upVoteThread,
 	};
 })();
 

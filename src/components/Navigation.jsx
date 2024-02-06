@@ -69,9 +69,11 @@ function Navigation() {
 						<ButtonMenu>
 							<FaMoon />{' '}
 						</ButtonMenu>
-						<ButtonMenu>
-							<p>Login</p>{' '}
-						</ButtonMenu>
+						<Link to="/login">
+							<ButtonMenu>
+								<p>Login</p>{' '}
+							</ButtonMenu>
+						</Link>
 					</div>
 				</div>
 

@@ -1,8 +1,18 @@
 import AuthInput from './_base_components/AuthInput';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import useInput from '../hooks/useInput';
 
-function AuthInputCard({ isRegister }) {
+function AuthInputCard({ isRegister, onSubmit }) {
+	const [email, handleChangeEmail] = useInput('');
+	const [password, handleChangePassword] = useInput('');
+	const [name, handleChangeName] = useInput('');
+
+	function handleSubmit(event) {
+		event.preventDefault();
+		onSubmit({ email, password, name });
+	}
+
 	return (
 		<div className="flex flex-col items-center justify-center   mx-auto  ">
 			<div className="w-full rounded-lg shadow bg-gray-800 border  border-gray-600 max-w-xl mt-8 ">
@@ -12,18 +22,30 @@ function AuthInputCard({ isRegister }) {
 					</h1>
 					<form className="md:space-y-6 " action="#">
 						{isRegister && (
-							<AuthInput label="Username" type="text" placeholder="Your Name" />
+							<AuthInput
+								label="Username"
+								type="text"
+								placeholder="Your Name"
+								onChange={handleChangeName}
+							/>
 						)}
 						<AuthInput
 							label="Email"
 							type="email"
 							placeholder="yourmail@mail.com"
+							onChange={handleChangeEmail}
 						/>
-						<AuthInput label="Password" type="password" placeholder="******" />
+						<AuthInput
+							label="Password"
+							type="password"
+							placeholder="******"
+							onChange={handleChangePassword}
+						/>
 
 						<button
 							type="submit"
 							className="w-full rounded-lg py-2 text-md font-bold  text-white  bg-blue-700 hover:bg-blue-400 border border-gray-500 "
+							onClick={handleSubmit}
 						>
 							{isRegister ? 'Sign Up' : 'Sign In'}
 						</button>
@@ -48,6 +70,7 @@ function AuthInputCard({ isRegister }) {
 
 AuthInputCard.propTypes = {
 	isRegister: PropTypes.bool.isRequired,
+	onSubmit: PropTypes.func.isRequired,
 };
 
 export default AuthInputCard;
