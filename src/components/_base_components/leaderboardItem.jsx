@@ -14,7 +14,13 @@ function LeaderboardItem({ user, score, index }) {
 					className="w-10 h-10 rounded-full mr-2"
 					title={name}
 				/>
-				<h3 className="block  py-2 capitalize text-md">{name}</h3>
+
+				<h3
+					className="block py-2 capitalize text-md truncate max-w-[80px]"
+					title={name}
+				>
+					{name.length > 10 ? `${name.substring(0, 10)}...` : name}
+				</h3>
 			</div>
 			<div>
 				<span className="block text-md py-2 px-4">{score}</span>

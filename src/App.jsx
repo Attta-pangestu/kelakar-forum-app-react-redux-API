@@ -4,6 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 // pages
 import HomePage from './pages/HomePage';
 import AuthPage from './pages/AuthPage';
+import LeaderPage from './pages/LeaderPage';
+import ProfilPage from './pages/ProfilPage';
+import DetailPage from './pages/DetailPage';
+
 // Component
 import Navigation from './components/Navigation';
 import { useEffect } from 'react';
@@ -14,7 +18,7 @@ import { asyncPreloadProcess } from './states/isPreload/action';
 
 function App() {
 	const dispatch = useDispatch();
-	const { authUser = null, isPreload = true } = useSelector((states) => states);
+	const { isPreload = true } = useSelector((states) => states);
 	const location = useLocation();
 	const currentPath = location.pathname;
 	const noNavigationPages = ['/login', '/register'];
@@ -42,6 +46,9 @@ function App() {
 								path="/register"
 								element={<AuthPage isRegister={true} />}
 							/>
+							<Route path="/leaderboard" element={<LeaderPage />} />
+							<Route path="/profil" element={<ProfilPage />} />
+							<Route path="/detail/:id" element={<DetailPage />} />
 						</Routes>
 					</div>
 				</main>

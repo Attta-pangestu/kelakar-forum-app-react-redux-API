@@ -6,7 +6,6 @@ const actionType = {
 };
 
 function receiverAuthUserActionCreator(authUser) {
-	console.log(authUser);
 	return {
 		type: actionType.SET_AUTH_USER,
 		payload: {

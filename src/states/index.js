@@ -18,7 +18,7 @@ const store = configureStore({
 		allUsers: allUsersReducer,
 		leaderBoards: leaderBoardsReducer,
 		threads: threadsReducer,
-		threadDetailReducer: threadDetailReducer,
+		threadDetail: threadDetailReducer,
 	},
 });
 

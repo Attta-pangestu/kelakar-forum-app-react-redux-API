@@ -15,6 +15,7 @@ const api = (() => {
 			...options,
 			headers: {
 				Authorization: `Bearer ${getAccessToken()}`,
+				'Content-Type': 'application/json',
 			},
 		});
 	}
@@ -103,13 +104,17 @@ const api = (() => {
 			body: JSON.stringify({ title, body, category }),
 		});
 		const responseJSON = await response.json();
-		const { status, message } = responseJSON;
-
+		const {
+			status,
+			message,
+			data: { thread },
+		} = responseJSON;
+		console.log(responseJSON);
 		if (status !== 'success') {
 			alert(message);
 			throw new Error(message);
 		}
-		return { error: false };
+		return { thread };
 	}
 
 	async function getAllThreads() {
@@ -135,8 +140,11 @@ const api = (() => {
 			method: 'GET',
 		});
 		const responseJSON = await response.json();
-		const { status, message, data: detailThread } = responseJSON;
-
+		const {
+			status,
+			message,
+			data: { detailThread },
+		} = responseJSON;
 		if (status !== 'success') {
 			alert(message);
 			throw new Error(message);
@@ -207,6 +215,7 @@ const api = (() => {
 		login,
 		getAuthUsers,
 		getInitialData,
+		getAllLeaderboards,
 		postThread,
 		getDetailThreads,
 		postComment,
