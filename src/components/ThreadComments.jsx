@@ -6,7 +6,13 @@ import { useState } from 'react';
 
 import { SlLike, SlDislike } from 'react-icons/sl';
 
-function ThreadComments({ authUser, comments, handlePostComment }) {
+function ThreadComments({
+	authUser,
+	comments,
+	handlePostComment,
+	handleLikeComment,
+	handleDislikeComment,
+}) {
 	const [comment, setComment] = useState('');
 
 	const { name: authName, avatar: authAvatar } = authUser;
@@ -54,11 +60,11 @@ function ThreadComments({ authUser, comments, handlePostComment }) {
 					</div>
 
 					<div className="mt-4  flex gap-4 text-lg">
-						<button>
+						<button onClick={() => handleLikeComment(comment.id)}>
 							{' '}
 							<SlLike className="inline mb-1" /> {comment.upVotesBy.length}
 						</button>
-						<button>
+						<button onClick={() => handleDislikeComment(comment.id)}>
 							{' '}
 							<SlDislike className="inline mb-1" /> {comment.downVotesBy.length}
 						</button>
@@ -73,6 +79,8 @@ ThreadComments.propTypes = {
 	authUser: PropTypes.shape(userShape).isRequired,
 	comments: PropTypes.array.isRequired,
 	handlePostComment: PropTypes.func.isRequired,
+	handleLikeComment: PropTypes.func.isRequired,
+	handleDislikeComment: PropTypes.func.isRequired,
 };
 
 export default ThreadComments;

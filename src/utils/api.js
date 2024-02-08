@@ -217,6 +217,38 @@ const api = (() => {
 		}
 	}
 
+	async function downVoteComment(id) {
+		const response = await _fetchWithAuth(
+			`${BASE_URL}/threads/comments/${id}/down-vote`,
+			{
+				method: 'POST',
+			}
+		);
+		const responseJSON = await response.json();
+		const { status, message } = responseJSON;
+		console.log(responseJSON);
+		if (status !== 'success') {
+			alert(message);
+			throw new Error(message);
+		}
+	}
+
+	async function upVoteComment(id) {
+		const response = await _fetchWithAuth(
+			`${BASE_URL}/threads/comments/${id}/up-vote`,
+			{
+				method: 'POST',
+			}
+		);
+		const responseJSON = await response.json();
+		const { status, message } = responseJSON;
+		console.log(responseJSON);
+		if (status !== 'success') {
+			alert(message);
+			throw new Error(message);
+		}
+	}
+
 	async function getInitialData() {
 		const { users } = await getAllUsers();
 		const { threads } = await getAllThreads();
@@ -236,6 +268,8 @@ const api = (() => {
 		postComment,
 		upVoteThread,
 		downVoteThread,
+		upVoteComment,
+		downVoteComment,
 	};
 })();
 

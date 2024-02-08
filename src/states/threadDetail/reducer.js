@@ -24,6 +24,44 @@ function threadDetailReducer(threadDetail = {}, action = {}) {
 					  )
 					: [...threadDetail.upVotesBy, action.payload.authUserId],
 			};
+		case actionType.LIKE_COMMENT_DETAIL:
+			return {
+				...threadDetail,
+				comments: threadDetail.comments.map((comment) => {
+					if (comment.id === action.payload.commentId) {
+						return {
+							...comment,
+							upVotesBy: comment.upVotesBy.includes(action.payload.authUserId)
+								? comment.upVotesBy.filter(
+										(userId) => userId !== action.payload.authUserId
+								  )
+								: [...comment.upVotesBy, action.payload.authUserId],
+						};
+					}
+					return comment;
+				}),
+			};
+
+		case actionType.DISLIKE_COMMENT_DETAIL:
+			return {
+				...threadDetail,
+				comments: threadDetail.comments.map((comment) => {
+					if (comment.id === action.payload.commentId) {
+						return {
+							...comment,
+							downVotesBy: comment.downVotesBy.includes(
+								action.payload.authUserId
+							)
+								? comment.downVotesBy.filter(
+										(userId) => userId !== action.payload.authUserId
+								  )
+								: [...comment.downVotesBy, action.payload.authUserId],
+						};
+					}
+					return comment;
+				}),
+			};
+
 		default:
 			return threadDetail;
 	}

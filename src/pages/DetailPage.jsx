@@ -8,6 +8,8 @@ import {
 	asyncSetThreadDetail,
 	likeThreadDetailActionCreator,
 	dislikeThreadDetailActionCreator,
+	likeCommentDetailActionCreator,
+	dislikeCommentDetailActionCreator,
 } from '../states/threadDetail/action';
 import { asyncLikeThread, asyncDislikeThread } from '../states/threads/action';
 
@@ -55,6 +57,15 @@ function DetailPage() {
 		}
 	};
 
+	const handleLikeComment = (commentId) => {
+		dispatch(likeCommentDetailActionCreator(commentId, authUser.id));
+	};
+
+	const handleDislikeComment = (commentId) => {
+		console.log('handle dislike comment');
+		dispatch(dislikeCommentDetailActionCreator(commentId, authUser.id));
+	};
+
 	const handlePostComment = () => {
 		console.log('postcomment');
 	};
@@ -84,6 +95,8 @@ function DetailPage() {
 				<ThreadComments
 					{...threadWithAuthUser}
 					handlePostComment={handlePostComment}
+					handleLikeComment={handleLikeComment}
+					handleDislikeComment={handleDislikeComment}
 				/>
 			</div>
 			<SideUserInfo {...authUser} />

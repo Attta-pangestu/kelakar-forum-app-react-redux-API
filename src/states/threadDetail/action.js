@@ -4,6 +4,8 @@ const actionType = {
 	SET_THREAD_DETAIL: 'SET_THREAD_DETAIL',
 	LIKE_THREAD_DETAIL: 'LIKE_THREAD_DETAIL',
 	DISLIKE_THREAD_DETAIL: 'DISLIKE_THREAD_DETAIL',
+	LIKE_COMMENT_DETAIL: 'LIKE_COMMENT_DETAIL',
+	DISLIKE_COMMENT_DETAIL: 'DISLIKE_COMMENT_DETAIL',
 };
 
 function setThreadDetailActionCreator(threadDetail) {
@@ -33,6 +35,26 @@ function dislikeThreadDetailActionCreator(authUserId) {
 	};
 }
 
+function likeCommentDetailActionCreator(commentId, authUserId) {
+	return {
+		type: actionType.LIKE_COMMENT_DETAIL,
+		payload: {
+			commentId,
+			authUserId,
+		},
+	};
+}
+
+function dislikeCommentDetailActionCreator(commentId, authUserId) {
+	return {
+		type: actionType.DISLIKE_COMMENT_DETAIL,
+		payload: {
+			commentId,
+			authUserId,
+		},
+	};
+}
+
 function asyncSetThreadDetail(threadId) {
 	return async (dispatch) => {
 		try {
@@ -51,4 +73,6 @@ export {
 	asyncSetThreadDetail,
 	likeThreadDetailActionCreator,
 	dislikeThreadDetailActionCreator,
+	likeCommentDetailActionCreator,
+	dislikeCommentDetailActionCreator,
 };
