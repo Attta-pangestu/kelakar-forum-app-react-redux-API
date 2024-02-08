@@ -193,13 +193,28 @@ const api = (() => {
 			method: 'POST',
 		});
 		const responseJSON = await response.json();
-		const { status, message, data: detailThread } = responseJSON;
-
+		const { status, message } = responseJSON;
+		console.log(responseJSON);
 		if (status !== 'success') {
 			alert(message);
 			throw new Error(message);
 		}
-		return { detailThread };
+	}
+
+	async function downVoteThread(id) {
+		const response = await _fetchWithAuth(
+			`${BASE_URL}/threads/${id}/down-vote`,
+			{
+				method: 'POST',
+			}
+		);
+		const responseJSON = await response.json();
+		const { status, message } = responseJSON;
+		console.log(responseJSON);
+		if (status !== 'success') {
+			alert(message);
+			throw new Error(message);
+		}
 	}
 
 	async function getInitialData() {
@@ -220,6 +235,7 @@ const api = (() => {
 		getDetailThreads,
 		postComment,
 		upVoteThread,
+		downVoteThread,
 	};
 })();
 

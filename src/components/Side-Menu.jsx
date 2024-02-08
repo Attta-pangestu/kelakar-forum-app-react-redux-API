@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 function SideMenu() {
 	const { pathname } = useLocation();
 	return (
-		<aside className="block col-span-2 sticky top-20 h-24 ">
+		<aside className="block col-span-2 sticky top-20 h-fit rounded-md border border-neutral-600 p-4 pb-20 ">
 			<ul className="flex flex-col gap-4">
 				<li>
 					<Link

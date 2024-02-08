@@ -48,7 +48,7 @@ function App() {
 							/>
 							<Route path="/leaderboard" element={<LeaderPage />} />
 							<Route path="/profil" element={<ProfilPage />} />
-							<Route path="/detail/:id" element={<DetailPage />} />
+							<Route path="/detail/:threadId" element={<DetailPage />} />
 						</Routes>
 					</div>
 				</main>

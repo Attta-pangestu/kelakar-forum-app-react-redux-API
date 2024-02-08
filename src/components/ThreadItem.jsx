@@ -15,17 +15,15 @@ function ThreadItem({
 	totalComments,
 	createdAt,
 	user,
+	authUserId,
+	handleLikeThread,
+	handleDislikeThread,
 }) {
-	const likeCount = upVotesBy.length;
-	const dislikeCount = downVotesBy.length;
-
+	console.log(authUserId);
 	return (
-		<article className="bg-neutral-900 rounded-md p-4 shadow-md border-neutral-200  mt-4">
+		<article className="bg-neutral-900 rounded-md p-4 shadow-md border border-neutral-600  mt-4">
 			<div className="flex gap-2">
-				<img
-					src="https://ui-avatars.com/api/?name=atha&background=random"
-					className="w-10 h-10 rounded-full mr-2"
-				/>
+				<img src={user.avatar} className="w-10 h-10 rounded-full mr-2" />
 				<div className="flex flex-col ml-2">
 					<span className="font-medium text-sm">{user.name}</span>
 					<span className="text-neutral-500 text-xs">{createdAt}</span>
@@ -51,13 +49,23 @@ function ThreadItem({
 						</button>
 
 						<div className="mt-4 flex gap-4">
-							<button>
+							<button onClick={() => handleLikeThread(id)}>
 								{' '}
-								<SlLike className="inline mb-1" /> {likeCount}
+								<SlLike
+									className={`inline mb-1 ${
+										upVotesBy.includes(authUserId) ? 'text-red-500' : ''
+									}`}
+								/>{' '}
+								{upVotesBy.length}
 							</button>
-							<button>
+							<button onClick={() => handleDislikeThread(id)}>
 								{' '}
-								<SlDislike className="inline mb-1" /> {dislikeCount}
+								<SlDislike
+									className={`inline mb-1 ${
+										downVotesBy.includes(authUserId) ? 'text-red-500' : ''
+									}`}
+								/>{' '}
+								{downVotesBy.length}
 							</button>
 							<button>
 								{' '}
@@ -82,10 +90,13 @@ ThreadItem.propTypes = {
 	body: PropTypes.string.isRequired,
 	category: PropTypes.string.isRequired,
 	createdAt: PropTypes.string.isRequired,
+	authUserId: PropTypes.string.isRequired,
 	user: PropTypes.shape(userShape).isRequired,
 	upVotesBy: PropTypes.array.isRequired,
 	downVotesBy: PropTypes.array.isRequired,
 	totalComments: PropTypes.number.isRequired,
+	handleLikeThread: PropTypes.func.isRequired,
+	handleDislikeThread: PropTypes.func.isRequired,
 };
 
 export default ThreadItem;

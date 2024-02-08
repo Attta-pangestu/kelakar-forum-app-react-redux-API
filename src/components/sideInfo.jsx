@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Categories from './Categories';
 import ThreadLeaderBoard from './ThreadLeaderboard';
 function SideInfo({ leaderboards, categories }) {
-	console.log(categories);
 	return (
 		<aside className="col-span-3">
 			<Categories categories={categories} />
