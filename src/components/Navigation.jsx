@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import {
 	FaArrowLeft,
@@ -13,8 +14,9 @@ import { FaRankingStar } from 'react-icons/fa6';
 
 // base component
 import ButtonMenu from './_base_components/Button_menu';
+import SearchBar from './SearchBar';
 
-function Navigation() {
+function Navigation({ handleSearchBar }) {
 	const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
 
 	return (
@@ -41,20 +43,8 @@ function Navigation() {
 							</span>
 						</Link>
 					</div>
-					{/* search-bar */}
-					<div className=" block col-span-7 py-4 relative ">
-						<form>
-							<input
-								id="search-input"
-								type="text"
-								className="t-form w-full py-2 px-2 border-0 bg-neutral-600 rounded-md  "
-								placeholder="Type and hit enter"
-							/>
-						</form>
-						<button type="button" className="absolute top-7 right-4">
-							<FaSearch />
-						</button>
-					</div>
+
+					<SearchBar handleSearchBar={handleSearchBar} />
 
 					<div className="col-span-3 flex justify-end ">
 						<ButtonMenu>
@@ -116,5 +106,9 @@ function Navigation() {
 		</>
 	);
 }
+
+Navigation.propTypes = {
+	handleSearchBar: PropTypes.func.isRequired,
+};
 
 export default Navigation;

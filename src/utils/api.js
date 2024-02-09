@@ -170,24 +170,6 @@ const api = (() => {
 		return { error: false, leaderboards };
 	}
 
-	async function postComment({ content, id }) {
-		const response = await _fetchWithAuth(
-			`${BASE_URL}/threads/${id}/comments`,
-			{
-				method: 'POST',
-				body: JSON.stringify({ content }),
-			}
-		);
-		const responseJSON = await response.json();
-		const { status, message, data: detailThread } = responseJSON;
-
-		if (status !== 'success') {
-			alert(message);
-			throw new Error(message);
-		}
-		return { error: false, detailThread };
-	}
-
 	async function upVoteThread(id) {
 		const response = await _fetchWithAuth(`${BASE_URL}/threads/${id}/up-vote`, {
 			method: 'POST',
@@ -217,30 +199,52 @@ const api = (() => {
 		}
 	}
 
-	async function downVoteComment(id) {
+	async function postComment({ content, threadId }) {
 		const response = await _fetchWithAuth(
-			`${BASE_URL}/threads/comments/${id}/down-vote`,
+			`${BASE_URL}/threads/${threadId}/comments`,
+			{
+				method: 'POST',
+				body: JSON.stringify({ content }),
+			}
+		);
+		const responseJSON = await response.json();
+		const {
+			status,
+			message,
+			data: { comment },
+		} = responseJSON;
+
+		if (status !== 'success') {
+			alert(message);
+			throw new Error(message);
+		}
+		return { error: false, comment };
+	}
+
+	async function downVoteComment({ threadId, commentId }) {
+		const response = await _fetchWithAuth(
+			`${BASE_URL}/threads/${threadId}/comments/${commentId}/down-vote`,
 			{
 				method: 'POST',
 			}
 		);
 		const responseJSON = await response.json();
 		const { status, message } = responseJSON;
-		console.log(responseJSON);
 		if (status !== 'success') {
 			alert(message);
 			throw new Error(message);
 		}
 	}
 
-	async function upVoteComment(id) {
+	async function upVoteComment({ threadId, commentId }) {
 		const response = await _fetchWithAuth(
-			`${BASE_URL}/threads/comments/${id}/up-vote`,
+			`${BASE_URL}/threads/${threadId}/comments/${commentId}/up-vote`,
 			{
 				method: 'POST',
 			}
 		);
 		const responseJSON = await response.json();
+		console.log(responseJSON);
 		const { status, message } = responseJSON;
 		console.log(responseJSON);
 		if (status !== 'success') {

@@ -62,6 +62,12 @@ function threadDetailReducer(threadDetail = {}, action = {}) {
 				}),
 			};
 
+		case actionType.POST_COMMENT_DETAIL:
+			return {
+				...threadDetail,
+				comments: [...threadDetail.comments, action.payload.comment],
+			};
+
 		default:
 			return threadDetail;
 	}

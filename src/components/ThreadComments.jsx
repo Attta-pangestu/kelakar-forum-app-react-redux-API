@@ -33,9 +33,9 @@ function ThreadComments({
 				<form className="w-full">
 					<InputWithTextEditor onChange={handleComment} value={comment} />
 					<button
-						type="submit"
+						type="button"
 						className=" mt-4 py-2 px-6 bg-blue-700 hover:bg-blue-500 text-white text-xl font-bold rounded-lg"
-						onClick={handlePostComment}
+						onClick={() => handlePostComment(comment)}
 					>
 						Comment
 					</button>

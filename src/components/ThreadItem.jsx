@@ -19,7 +19,6 @@ function ThreadItem({
 	handleLikeThread,
 	handleDislikeThread,
 }) {
-	console.log(authUserId);
 	return (
 		<article className="bg-neutral-900 rounded-md p-4 shadow-md border border-neutral-600  mt-4">
 			<div className="flex gap-2">

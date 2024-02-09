@@ -1,5 +1,6 @@
 // library
 import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import ThreadLists from '../components/ThreadLists';
 
@@ -8,7 +9,7 @@ import SideMenu from '../components/Side-Menu';
 
 // action
 import asyncPopulateUserAndThread from '../states/shared/action';
-import { useEffect } from 'react';
+import { useEffect, useCallback, useMemo } from 'react';
 import {
 	asyncAddThread,
 	asyncLikeThread,
@@ -17,7 +18,7 @@ import {
 	dislikeThreadActionCreator,
 } from '../states/threads/action';
 
-function HomePage() {
+function HomePage({ searchVal }) {
 	const dispatch = useDispatch();
 	const {
 		authUser = {},
@@ -30,43 +31,67 @@ function HomePage() {
 		dispatch(asyncPopulateUserAndThread());
 	}, [dispatch]);
 
-	const handleApiPostSubmit = async ({ title, content, hashText }) => {
-		await dispatch(
-			asyncAddThread({ title, body: content, category: hashText })
+	const handleApiPostSubmit = useCallback(
+		async ({ title, content, hashText }) => {
+			await dispatch(
+				asyncAddThread({ title, body: content, category: hashText })
+			);
+		},
+		[dispatch]
+	);
+
+	const handleLikeThread = useCallback(
+		async (threadId) => {
+			const threadById = threads.find((thread) => thread.id === threadId);
+			await dispatch(
+				asyncLikeThread({ threadId, authUserId: authUser.id, isDetail: false })
+			);
+			// update and sync UI of Dislike button
+			threadById.downVotesBy.includes(authUser.id) &&
+				dispatch(dislikeThreadActionCreator(threadId, authUser.id));
+		},
+		[dispatch, authUser.id, threads]
+	);
+
+	const handleDislikeThread = useCallback(
+		async (threadId) => {
+			const threadById = threads.find((thread) => thread.id === threadId);
+			await dispatch(
+				asyncDislikeThread({
+					threadId,
+					authUserId: authUser.id,
+					isDetail: false,
+				})
+			);
+			// update and sync UI of Dislike button
+			threadById.upVotesBy.includes(authUser.id) &&
+				dispatch(likeThreadActionCreator(threadId, authUser.id));
+		},
+		[dispatch, authUser.id, threads]
+	);
+
+	const filterThreads = useMemo(() => {
+		return threads.filter(
+			(thread) =>
+				thread.title.toLowerCase().includes(searchVal.toLowerCase()) ||
+				thread.body.toLowerCase().includes(searchVal.toLowerCase()) ||
+				thread.category.toLowerCase().includes(searchVal.toLowerCase())
 		);
-	};
+	}, [threads, searchVal]);
 
-	const handleLikeThread = async (threadId) => {
-		const threadById = threads.find((thread) => thread.id === threadId);
-		await dispatch(
-			asyncLikeThread({ threadId, authUserId: authUser.id, isDetail: false })
-		);
-		// update and sync UI of Dislike button
-		threadById.downVotesBy.includes(authUser.id) &&
-			dispatch(dislikeThreadActionCreator(threadId, authUser.id));
-	};
+	const threadListWithUser = useMemo(() => {
+		return filterThreads.map((thread) => {
+			return {
+				...thread,
+				user: allUsers.find((user) => user.id === thread.ownerId),
+				authUserId: authUser.id,
+			};
+		});
+	}, [filterThreads, allUsers, authUser.id]);
 
-	const handleDislikeThread = async (threadId) => {
-		const threadById = threads.find((thread) => thread.id === threadId);
-		await dispatch(
-			asyncDislikeThread({ threadId, authUserId: authUser.id, isDetail: false })
-		);
-		// update and sync UI of Dislike button
-		threadById.upVotesBy.includes(authUser.id) &&
-			dispatch(likeThreadActionCreator(threadId, authUser.id));
-	};
-
-	const threadListWithUser = threads.map((thread) => {
-		return {
-			...thread,
-			user: allUsers.find((user) => user.id === thread.ownerId),
-			authUserId: authUser.id,
-		};
-	});
-
-	const extractCategories = [
-		...new Set(threads.map((thread) => thread.category)),
-	];
+	const extractCategories = useMemo(() => {
+		return [...new Set(threads.map((thread) => thread.category))];
+	}, [threads]);
 
 	return (
 		<>
@@ -83,5 +108,13 @@ function HomePage() {
 		</>
 	);
 }
+
+HomePage.propTypes = {
+	searchVal: PropTypes.string,
+};
+
+HomePage.defaultProps = {
+	searchVal: '',
+};
 
 export default HomePage;

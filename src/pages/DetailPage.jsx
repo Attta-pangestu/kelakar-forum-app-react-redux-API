@@ -6,11 +6,15 @@ import { useSelector, useDispatch } from 'react-redux';
 // action
 import {
 	asyncSetThreadDetail,
+	asyncLikeComment,
+	asyncDislikeComment,
+	asyncPostCommentDetail,
 	likeThreadDetailActionCreator,
 	dislikeThreadDetailActionCreator,
 	likeCommentDetailActionCreator,
 	dislikeCommentDetailActionCreator,
 } from '../states/threadDetail/action';
+
 import { asyncLikeThread, asyncDislikeThread } from '../states/threads/action';
 
 // component
@@ -57,17 +61,40 @@ function DetailPage() {
 		}
 	};
 
-	const handleLikeComment = (commentId) => {
-		dispatch(likeCommentDetailActionCreator(commentId, authUser.id));
+	const handleLikeComment = async (commentId) => {
+		try {
+			await dispatch(
+				asyncLikeComment({ authUserId: authUser.id, commentId, threadId })
+			);
+			// sycn UI
+			const commentById = threadDetail.comments.find(
+				(comment) => comment.id === commentId
+			);
+			commentById.downVotesBy.includes(authUser.id) &&
+				dispatch(dislikeCommentDetailActionCreator(commentId, authUser.id));
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
-	const handleDislikeComment = (commentId) => {
-		console.log('handle dislike comment');
-		dispatch(dislikeCommentDetailActionCreator(commentId, authUser.id));
+	const handleDislikeComment = async (commentId) => {
+		try {
+			await dispatch(
+				asyncDislikeComment({ authUserId: authUser.id, commentId, threadId })
+			);
+			// sycn UI
+			const commentById = threadDetail.comments.find(
+				(comment) => comment.id === commentId
+			);
+			commentById.upVotesBy.includes(authUser.id) &&
+				dispatch(likeCommentDetailActionCreator(commentId, authUser.id));
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
-	const handlePostComment = () => {
-		console.log('postcomment');
+	const handlePostComment = (content) => {
+		dispatch(asyncPostCommentDetail({ content, threadId }));
 	};
 
 	useEffect(() => {

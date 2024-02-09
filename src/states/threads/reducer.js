@@ -1,5 +1,6 @@
 import { actionType } from './action';
 
+
 function threadsReducer(threads = [], action = {}) {
 	switch (action.type) {
 		case actionType.SET_THREADS:
