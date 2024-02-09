@@ -65,6 +65,7 @@ function asyncLoginUser({ email, password }) {
 export {
 	actionType,
 	receiverAuthUserActionCreator,
+	unsetAuthUserActionCreator,
 	asyncReceiveAuthUser,
 	asyncRegisterUser,
 	asyncLoginUser,

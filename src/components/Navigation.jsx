@@ -9,16 +9,27 @@ import {
 } from 'react-icons/fa';
 import { RiMenu2Line } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { FaRankingStar } from 'react-icons/fa6';
-
+import { FiLogOut } from 'react-icons/fi';
 // base component
 import ButtonMenu from './_base_components/Button_menu';
 import SearchBar from './SearchBar';
 
+// action
+import { unsetAuthUserActionCreator } from '../states/authUser/action';
+
 function Navigation({ handleSearchBar }) {
+	const dispatch = useDispatch();
+	const { authUser = null } = useSelector((states) => states);
 	const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
 
+	const handleLogout = () => {
+		if (authUser) {
+			dispatch(unsetAuthUserActionCreator());
+		}
+	};
 	return (
 		<>
 			<nav className=" w-full px-3 relative z-10 shadow-sm bg-black border-b border-neutral-900 text-white justify-end">
@@ -59,11 +70,20 @@ function Navigation({ handleSearchBar }) {
 						<ButtonMenu>
 							<FaMoon />{' '}
 						</ButtonMenu>
-						<Link to="/login">
-							<ButtonMenu>
-								<p>Login</p>{' '}
-							</ButtonMenu>
-						</Link>
+						{authUser === null ? (
+							<Link to="/login">
+								<ButtonMenu>
+									<p>Login</p>{' '}
+								</ButtonMenu>
+							</Link>
+						) : (
+							<button
+								onClick={handleLogout}
+								className="flex justify-center align-middle items-center gap-2 text-2xl bg-neutral-700 px-4 py-1 rounded-md"
+							>
+								<FiLogOut /> {authUser.name}
+							</button>
+						)}
 					</div>
 				</div>
 
