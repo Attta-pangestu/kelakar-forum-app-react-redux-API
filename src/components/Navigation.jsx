@@ -9,7 +9,7 @@ import {
 } from 'react-icons/fa';
 import { RiMenu2Line } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { FaRankingStar } from 'react-icons/fa6';
 import { FiLogOut } from 'react-icons/fi';
@@ -17,19 +17,10 @@ import { FiLogOut } from 'react-icons/fi';
 import ButtonMenu from './_base_components/Button_menu';
 import SearchBar from './SearchBar';
 
-// action
-import { unsetAuthUserActionCreator } from '../states/authUser/action';
-
-function Navigation({ handleSearchBar }) {
-	const dispatch = useDispatch();
+function Navigation({ handleSearchBar, handleLogout }) {
 	const { authUser = null } = useSelector((states) => states);
 	const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
 
-	const handleLogout = () => {
-		if (authUser) {
-			dispatch(unsetAuthUserActionCreator());
-		}
-	};
 	return (
 		<>
 			<nav className=" w-full px-3 relative z-10 shadow-sm bg-black border-b border-neutral-900 text-white justify-end">
@@ -129,6 +120,7 @@ function Navigation({ handleSearchBar }) {
 
 Navigation.propTypes = {
 	handleSearchBar: PropTypes.func.isRequired,
+	handleLogout: PropTypes.func.isRequired,
 };
 
 export default Navigation;

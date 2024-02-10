@@ -1,4 +1,5 @@
 import api from '../../utils/api';
+import { asyncPreloadProcess } from '../isPreload/action';
 
 const actionType = {
 	SET_AUTH_USER: 'SET_AUTH_USER',
@@ -54,11 +55,15 @@ function asyncRegisterUser({ name, email, password }) {
 }
 
 function asyncLoginUser({ email, password }) {
-	return async () => {
-		const { token } = await api.login({ email, password });
-		api.putAccessToken(token);
-		console.log(token);
-		alert('Login Success');
+	return async (dispatch) => {
+		try {
+			const { token } = await api.login({ email, password });
+			await api.putAccessToken(token);
+			dispatch(asyncPreloadProcess(token));
+			alert('login success');
+		} catch (err) {
+			console.log(err);
+		}
 	};
 }
 

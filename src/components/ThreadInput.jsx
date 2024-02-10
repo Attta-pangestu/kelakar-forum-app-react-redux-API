@@ -9,14 +9,14 @@ import InputPost from './_base_components/InputPost';
 function ThreadInput({ authUser, handleApiPostSubmit }) {
 	return (
 		<div className="mt-2 bg-neutral-900 p-4 rounded-lg border border-neutral-600">
-			<UserProfilePost authUser={authUser} />
+			{authUser && <UserProfilePost authUser={authUser} />}
 			<InputPost handleApiPostSubmit={handleApiPostSubmit} />
 		</div>
 	);
 }
 
 ThreadInput.propTypes = {
-	authUser: Proptypes.object.isRequired,
+	authUser: Proptypes.object,
 	handleApiPostSubmit: Proptypes.func.isRequired,
 };
 

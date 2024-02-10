@@ -42,6 +42,11 @@ function HomePage({ searchVal }) {
 
 	const handleLikeThread = useCallback(
 		async (threadId) => {
+			if (!authUser) {
+				alert('Silakan login terlebih dahulu untuk memberi suka pada thread.');
+				return;
+			}
+
 			const threadById = threads.find((thread) => thread.id === threadId);
 			await dispatch(
 				asyncLikeThread({ threadId, authUserId: authUser.id, isDetail: false })
@@ -50,11 +55,18 @@ function HomePage({ searchVal }) {
 			threadById.downVotesBy.includes(authUser.id) &&
 				dispatch(dislikeThreadActionCreator(threadId, authUser.id));
 		},
-		[dispatch, authUser.id, threads]
+		[dispatch, authUser, threads]
 	);
 
 	const handleDislikeThread = useCallback(
 		async (threadId) => {
+			if (!authUser) {
+				alert(
+					'Silakan login terlebih dahulu untuk memberi tidak suka pada thread.'
+				);
+				return;
+			}
+
 			const threadById = threads.find((thread) => thread.id === threadId);
 			await dispatch(
 				asyncDislikeThread({
@@ -67,7 +79,7 @@ function HomePage({ searchVal }) {
 			threadById.upVotesBy.includes(authUser.id) &&
 				dispatch(likeThreadActionCreator(threadId, authUser.id));
 		},
-		[dispatch, authUser.id, threads]
+		[dispatch, authUser, threads]
 	);
 
 	const filterThreads = useMemo(() => {

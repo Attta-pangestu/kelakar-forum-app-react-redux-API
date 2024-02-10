@@ -51,7 +51,7 @@ const api = (() => {
 			status,
 			message,
 			data: { token },
-		} = responseJSON;
+		} = await responseJSON;
 
 		if (status !== 'success') {
 			alert(message);
