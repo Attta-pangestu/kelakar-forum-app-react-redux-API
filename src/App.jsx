@@ -18,6 +18,7 @@ import DetailPage from './pages/DetailPage';
 import Navigation from './components/Navigation';
 import { useEffect } from 'react';
 import Loading from './components/Loading';
+import LoadingBar from 'react-redux-loading-bar';
 
 // action
 import { asyncPreloadProcess } from './states/isPreload/action';
@@ -25,7 +26,6 @@ import { asyncUnsetAuthUser } from './states/authUser/action';
 
 function App() {
 	const [searchParams] = useSearchParams();
-	const navigate = useNavigate();
 	const searchVal = searchParams.get('thread');
 	const dispatch = useDispatch();
 	const { isPreload = true, authUser = null } = useSelector((states) => states);
@@ -35,7 +35,7 @@ function App() {
 
 	useEffect(() => {
 		dispatch(asyncPreloadProcess());
-	}, [dispatch, authUser]);
+	}, [dispatch]);
 
 	if (isPreload) {
 		return null;
@@ -52,6 +52,7 @@ function App() {
 	if (authUser === null) {
 		return (
 			<>
+				<LoadingBar />
 				<Routes>
 					<Route path="/*" element={<AuthPage isRegister={false} />} />
 					<Route path="/register" element={<AuthPage isRegister={true} />} />
@@ -62,8 +63,9 @@ function App() {
 
 	return (
 		<>
+			<Loading />
+			{/* <LoadingBar /> */}
 			<div className="min-h-screen max-w-full  text-white ">
-				<Loading />
 				{authUser && !noNavigationPages.includes(currentPath) && (
 					<Navigation
 						handleSearchBar={handleSearchBar}

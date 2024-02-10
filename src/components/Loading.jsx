@@ -1,11 +1,12 @@
-import { LoadingBar } from 'react-redux-loading-bar';
+import LoadingBar from 'react-redux-loading-bar';
 
-const Loading = () => {
+function Loading() {
 	return (
-		<div className="fixed top-0 left-0 right-0 z-50">
-			<LoadingBar style={{ backgroundColor: 'red', height: '10px' }} />
+		<div className="absolute top-0 z-50 w-full">
+			{/* @TODO: use react-redux-loading-bar to show loading bar */}
+			<LoadingBar />
 		</div>
 	);
-};
+}
 
 export default Loading;

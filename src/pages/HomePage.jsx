@@ -2,8 +2,11 @@
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import ThreadLists from '../components/ThreadLists';
+// Utility
+import postedAt from '../utils/postedAt';
 
+// component
+import ThreadLists from '../components/ThreadLists';
 import SideInfo from '../components/sideInfo';
 import SideMenu from '../components/Side-Menu';
 
@@ -95,6 +98,7 @@ function HomePage({ searchVal }) {
 		return filterThreads.map((thread) => {
 			return {
 				...thread,
+				createdAt: postedAt(thread.createdAt),
 				user: allUsers.find((user) => user.id === thread.ownerId),
 				authUserId: authUser.id,
 			};

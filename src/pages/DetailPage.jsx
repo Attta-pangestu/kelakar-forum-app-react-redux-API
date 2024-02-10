@@ -1,4 +1,6 @@
 import { useParams } from 'react-router-dom';
+import postedAt from '../utils/postedAt';
+
 import SideMenu from '../components/Side-Menu';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -109,7 +111,11 @@ function DetailPage() {
 		return <p>Loading...</p>;
 	}
 
-	let threadWithAuthUser = { ...threadDetail, authUser };
+	let threadWithAuthUser = {
+		...threadDetail,
+		createdAt: postedAt(threadDetail.createdAt),
+		authUser,
+	};
 	return (
 		<>
 			<SideMenu />
